@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Table Example</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<h1  align="center">Premium calculator </h1>
+
+<br>
+
+
+<div class="container">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th>Description</th>
+        {% for item in data %}
+          {% if "Adult" in item.description %}
+            <th>{{ item.description }}</th>
+          {% endif %}
+        {% endfor %}
+        {% for item in data %}
+          {% if "Children" in item.description %}
+            <th>{{ item.description }}</th>
+          {% endif %}
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+     <tr>
+        <td>Age</td>
+        {% for item in data %}
+          <td>{{ item.age }}</td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>Base Rate</td>
+        {% for item in data %}
+          <td>{{ item.base_rate }}</td>
+        {% endfor %}
+      </tr>
+
+
+      <tr>
+        <td>Floater Discount</td>
+        {% for item in data %}
+          <td>{{ item.floater_discount }}</td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>Discounted Rate</td>
+        {% for item in data %}
+          <td>{{ item.discounted_rate }}</td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>Total</td>
+
+        <td colspan="1"> {{ total_rate }}</td>
+        {% for item in data %}
+          <td></td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+  <form method="GET">
+    <button type="submit" class="btn btn-primary">Go Back</button>
+  </form>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

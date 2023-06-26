@@ -1,0 +1,138 @@
+<!-- adults_and_children.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adults and Children Input</title>
+    <style>
+        .person-container {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Adults</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div id="adults-container">
+            <div class="person-container">
+                <label for="adult_age_1">Adult Age:</label>
+                <input type="number" name="adult_age_1" min="0" max="90" required>
+                <button type="button" class="delete-person-btn">-</button>
+            </div>
+        </div>
+        <button type="button" id="add-adult-btn">Add Adult</button>
+        <br><br>
+
+        <h1>Children</h1>
+        <div id="children-container">
+            <div class="person-container">
+                <label for="child_age_1">Child Age:</label>
+                <input type="number" name="child_age_1"  min="0" max="90" >
+                <button type="button" class="delete-person-btn">-</button>
+            </div>
+        </div>
+        <button type="button" id="add-child-btn">Add Child</button>
+        <br><br>
+
+        <label for="sum_insured">Sum Insured:</label>
+        <select name="sum_insured" id="sum_insured" required>
+            <option value="300000">300,000</option>
+            <option value="400000">400,000</option>
+            <option value="500000">500,000</option>
+        </select>
+        <br><br>
+
+        <label for="city">City:</label>
+        <select name="city" id="city" required>
+            <option value="1">Tier 1</option>
+            <option value="2">Tier 2</option>
+        </select>
+        <br><br>
+
+        <label for="tenure">Tenure:</label>
+        <select name="tenure" id="tenure" required>
+            <option value="1">1 year</option>
+            <option value="2">2 years</option>
+            <option value="3">3 years</option>
+        </select>
+        <br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var adultsContainer = document.getElementById('adults-container');
+            var addChildButton = document.getElementById('add-child-btn');
+            var childrenContainer = document.getElementById('children-container');
+            var addAdultButton = document.getElementById('add-adult-btn');
+            var personCount = {
+                'adults': 1,
+                'children': 1
+            };
+            var maxPersons = {
+                'adults': 2,
+                'children': 4
+            };
+
+            addAdultButton.addEventListener('click', function() {
+                addPerson('adults');
+            });
+
+            addChildButton.addEventListener('click', function() {
+                addPerson('children');
+            });
+
+            function addPerson(type) {
+                if (personCount[type] < maxPersons[type]) {
+                    personCount[type]++;
+                    var newPersonContainer = document.createElement('div');
+                    newPersonContainer.classList.add('person-container');
+                    newPersonContainer.innerHTML = `
+                        <label for="${type}_age_${personCount[type]}">${type === 'adults' ? 'Adult' : 'Child'} Age:</label>
+                        <input type="number" name="${type}_age_${personCount[type]}" required>
+                        <button type="button" class="delete-person-btn">-</button>
+                    `;
+                    if (type === 'adults') {
+                        adultsContainer.appendChild(newPersonContainer);
+                    } else if (type === 'children') {
+                        childrenContainer.appendChild(newPersonContainer);
+                    }
+                }
+
+                if (personCount[type] === maxPersons[type]) {
+                    if (type === 'adults') {
+                        addAdultButton.style.display = 'none';
+                    } else if (type === 'children') {
+                        addChildButton.style.display = 'none';
+                    }
+                }
+            }
+
+            adultsContainer.addEventListener('click', function(event) {
+                handleDeleteClick(event, 'adults');
+            });
+
+            childrenContainer.addEventListener('click', function(event) {
+                handleDeleteClick(event, 'children');
+            });
+
+            function handleDeleteClick(event, type) {
+                if (event.target.classList.contains('delete-person-btn')) {
+                    var personContainer = event.target.parentNode;
+                    personContainer.remove();
+                    personCount[type]--;
+
+                    if (personCount[type] < maxPersons[type]) {
+                        if (type === 'adults') {
+                            addAdultButton.style.display = 'block';
+                        } else if (type === 'children') {
+                            addChildButton.style.display = 'block';
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
